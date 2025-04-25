@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Curfew of Coffee helps you find the safest time to drink your coffee, latte, or tea to avoid sleep disruption. Starbucks, Lawson, FamilyMart, and 7-Eleven drinks included.">
+  <meta name="keywords" content="caffeine calculator, coffee curfew, bedtime caffeine, Starbucks caffeine, tea and sleep, caffeine and sleep, sleep-friendly drinks, コンビニ コーヒー カフェイン, 寝る前 コーヒー 時間, カフェイン摂取時間">
+  <meta name="author" content="Curfew of Coffee Team">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curfew of Coffee</title>
+  <style>
+    body {
+      background: url('coffee.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      text-align: center;
+      padding: 3rem;
+      backdrop-filter: blur(5px);
+    }
+    .container {
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 500px;
+      margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+    label, select, button {
+      display: block;
+      width: 100%;
+      margin: 1rem 0;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #d2691e;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #a0522d;
+    }
+    #result {
+      margin-top: 1.5rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Curfew of Coffee</h1>
+    <label for="bedtime">Select your bedtime:</label>
+    <select id="bedtime">
+      <option value="20">8:00 PM</option>
+      <option value="20.5">8:30 PM</option>
+      <option value="21">9:00 PM</option>
+      <option value="21.5">9:30 PM</option>
+      <option value="22" selected>10:00 PM</option>
+      <option value="22.5">10:30 PM</option>
+      <option value="23">11:00 PM</option>
+      <option value="23.5">11:30 PM</option>
+      <option value="0">12:00 AM</option>
+      <option value="0.5">12:30 AM</option>
+      <option value="1">1:00 AM</option>
+      <option value="1.5">1:30 AM</option>
+      <option value="2">2:00 AM</option>
+      <option value="2.5">2:30 AM</option>
+      <option value="3">3:00 AM</option>
+    </select>
+
+    <label for="beverage">Select your beverage:</label>
+    <select id="beverage">
+  <option value="189">Starbucks Drip Coffee (Short)</option>
+  <option value="276">Starbucks Drip Coffee (Tall)</option>
+  <option value="133">Starbucks Iced Drip Coffee (Short)</option>
+  <option value="158">Starbucks Iced Drip Coffee (Tall)</option>
+  <option value="26">Starbucks Decaf Drip Coffee (Tall)</option>
+  <option value="8">Starbucks Decaf Iced Drip Coffee (Tall)</option>
+  <option value="80">Starbucks Latte (Tall)</option>
+  <option value="7">Starbucks Decaf Latte (Tall)</option>
+  <option value="150">Lawson Coffee (M)</option>
+  <option value="130">Lawson Latte (M)</option>
+  <option value="45">Black Tea</option>
+</select>
+
+    <button onclick="calculateCutoff()">Check Cutoff Time</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function calculateCutoff() {
+      const bedtime = parseFloat(document.getElementById('bedtime').value);
+      const caffeine = parseInt(document.getElementById('beverage').value); // Placeholder values
+
+      let hoursBeforeBed = 0;
+      if (caffeine < 50) {
+        hoursBeforeBed = 0;
+      } else if (caffeine < 100) {
+        hoursBeforeBed = 8;
+      } else if (caffeine < 150) {
+        hoursBeforeBed = 10;
+      } else {
+        hoursBeforeBed = 12;
+      }
+
+      let cutoff = bedtime - hoursBeforeBed;
+      if (cutoff < 0) cutoff += 24;
+
+      let hours = Math.floor(cutoff);
+      let minutes = cutoff % 1 === 0.5 ? '30' : '00';
+
+      const formatTime = hours === 0 ? `12:${minutes} AM`
+                         : hours < 12 ? `${hours}:${minutes} AM`
+                         : hours === 12 ? `12:${minutes} PM`
+                         : `${hours - 12}:${minutes} PM`;
+
+      document.getElementById('result').innerText =
+        `With approximately ${caffeine} mg caffeine, avoid drinking this after ${formatTime}.Please note: This is based on market research in Japan and may not directly reflect conditions in the US."`;
+    }
+  </script>
+</body>
+</html>
